@@ -1,8 +1,6 @@
 # Foi utilizada a Action actions/upload-artifact, disponível no GitHub Marketplace, para armazenar os relatórios gerados pelos testes automatizados do Playwright. 
 #A solução facilita a análise dos resultados da execução, permitindo que a equipe faça download das evidências dos testes, identifique falhas e acompanhe a qualidade da aplicação diretamente pelo GitHub Actions.
 
-# CI de Nível 02 - Execução Manual + Relatório de Testes
-
 name: 'Execução Manual'
 
 on:
@@ -31,22 +29,20 @@ jobs:
       - name: Executando testes e2e
         run: yarn run e2e
 
-      - name: Verificando relatórios gerados
+      - name: Verificando arquivos gerados
         if: always()
         run: |
-          echo "Arquivos gerados:"
+          pwd
           ls -la
-          echo "Pasta playwright-report:"
-          ls -la playwright-report || true
-          echo "Arquivo results.xml:"
-          ls -la results.xml || true
+          find . -type d -name "playwright-report"
+          find . -type f -name "results.xml"
 
-      - name: Publicando relatórios Playwright
-        uses: actions/upload-artifact@v4
+      - name: Upload dos relatórios
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: relatorios-playwright
           path: |
-            playwright-report/
+            playwright-report/**
             results.xml
           retention-days: 7
