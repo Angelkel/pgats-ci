@@ -13,44 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Clone do projeto
       - uses: actions/checkout@v4
 
-      # Instalação do Node
       - uses: actions/setup-node@v4
         with:
           node-version: 24.x
 
-      # Instalação do Yarn
       - name: Instalando Yarn
         run: npm install -g yarn
 
-      # Instalação das dependências
       - name: Instalando dependências
         run: yarn
 
-      # Instalação dos browsers do Playwright
       - name: Instalando Browsers do Playwright
         run: yarn playwright install --with-deps
 
-      # Execução dos testes
       - name: Executando testes e2e
         run: yarn run e2e
 
-      # Verificação dos relatórios gerados
       - name: Verificando relatórios gerados
         if: always()
         run: |
-          echo "Arquivos na raiz do projeto:"
+          echo "Arquivos gerados:"
           ls -la
-
-          echo "Relatório HTML do Playwright:"
+          echo "Pasta playwright-report:"
           ls -la playwright-report || true
-
-          echo "Relatório JUnit:"
+          echo "Arquivo results.xml:"
           ls -la results.xml || true
 
-      # Publicação dos relatórios de testes
       - name: Publicando relatórios Playwright
         uses: actions/upload-artifact@v4
         if: always()
