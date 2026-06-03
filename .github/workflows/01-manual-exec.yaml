@@ -10,11 +10,9 @@ on:
 
 jobs:
   e2e-tests:
-
     runs-on: ubuntu-latest
 
     steps:
-
       # Clone do projeto
       - uses: actions/checkout@v4
 
@@ -33,23 +31,32 @@ jobs:
 
       # Instalação dos browsers do Playwright
       - name: Instalando Browsers do Playwright
-        run: yarn playwright install
+        run: yarn playwright install --with-deps
 
       # Execução dos testes
       - name: Executando testes e2e
         run: yarn run e2e
 
-      # Publicação do relatório de testes
-      - name: Publicando relatório Playwright
+      # Verificação dos relatórios gerados
+      - name: Verificando relatórios gerados
+        if: always()
+        run: |
+          echo "Arquivos na raiz do projeto:"
+          ls -la
+
+          echo "Relatório HTML do Playwright:"
+          ls -la playwright-report || true
+
+          echo "Relatório JUnit:"
+          ls -la results.xml || true
+
+      # Publicação dos relatórios de testes
+      - name: Publicando relatórios Playwright
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: relatorios-playwright
+          path: |
+            playwright-report/
+            results.xml
           retention-days: 7
-
-
-
-
-
-
