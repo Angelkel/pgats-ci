@@ -15,7 +15,7 @@ export default defineConfig({
   // ✅ CORREÇÃO AQUI
   reporter: [
     ['html', { open: 'never' }],
-    ['junit', { outputFile: 'results.xml' }]
+    ['junit', { outputFile: 'results.xml' }],
   ],
 
   use: {
@@ -26,13 +26,13 @@ export default defineConfig({
     screenshot: 'only-on-failure',
 
     // (boa prática para CI)
-    video: 'retain-on-failure'
+    video: 'retain-on-failure',
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
-    }
-  ]
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
 });

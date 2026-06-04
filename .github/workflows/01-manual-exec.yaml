@@ -1,4 +1,4 @@
-# Foi utilizada a Action actions/upload-artifact, disponível no GitHub Marketplace, para armazenar os relatórios gerados pelos testes automatizados do Playwright. 
+# Foi utilizada a Action actions/upload-artifact, disponível no GitHub Marketplace, para armazenar os relatórios gerados pelos testes automatizados do Playwright.
 #A solução facilita a análise dos resultados da execução, permitindo que a equipe faça download das evidências dos testes, identifique falhas e acompanhe a qualidade da aplicação diretamente pelo GitHub Actions.
 
 name: 'Execução Manual'
