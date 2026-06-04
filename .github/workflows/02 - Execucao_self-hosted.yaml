@@ -38,10 +38,19 @@ jobs:
 
       - name: 'Executar testes E2E'
         run: yarn run e2e
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+
+      - name: 'Verificar arquivos gerados'
+        if: ${{ always() }}
+        run: |
+          dir
+          Get-ChildItem -Recurse -Filter *.xml
+        shell: powershell
 
       - name: 'Publicar relatorio dos testes E2E'
         uses: dorny/test-reporter@v3
-        if: ${{ !cancelled() }}
+        if: ${{ always() && hashFiles('results.xml') != '' }}
         with:
           name: 'Relatorio Playwright E2E - Self-hosted'
           path: 'results.xml'
@@ -50,7 +59,7 @@ jobs:
 
       - name: 'Salvar relatorios como artefatos'
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: ${{ always() }}
         with:
           name: 'relatorios-self-hosted'
           path: |
@@ -58,3 +67,4 @@ jobs:
             playwright-report/
             test-results/
             reports/
+          if-no-files-found: warn
