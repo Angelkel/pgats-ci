@@ -44,18 +44,19 @@ jobs:
       - name: 'Verificar arquivos gerados'
         if: ${{ always() }}
         run: |
-          dir
+          Get-Location
           Get-ChildItem -Recurse -Filter *.xml
         shell: powershell
 
       - name: 'Publicar relatorio dos testes E2E'
         uses: dorny/test-reporter@v3
-        if: ${{ always() && hashFiles('results.xml') != '' }}
+        if: ${{ always() }}
         with:
           name: 'Relatorio Playwright E2E - Self-hosted'
-          path: 'results.xml'
+          path: '**/results.xml'
           reporter: 'java-junit'
           use-actions-summary: 'true'
+          fail-on-error: 'false'
 
       - name: 'Salvar relatorios como artefatos'
         uses: actions/upload-artifact@v4
@@ -63,7 +64,7 @@ jobs:
         with:
           name: 'relatorios-self-hosted'
           path: |
-            results.xml
+            **/results.xml
             playwright-report/
             test-results/
             reports/
